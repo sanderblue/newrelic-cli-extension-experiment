@@ -1,0 +1,12 @@
+Plugin:
+  Name: nerdpack
+  Short: nerdpack operations
+  Command: /Users/sblue/.newrelic/plugins/nerdpack/index.js
+Commands:
+  - Use: hello
+    Short: say hello
+    Flags:
+      - Shorthand: n
+        Name: name
+        Type: string
+        Usage: your name
