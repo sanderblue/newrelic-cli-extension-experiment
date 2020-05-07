@@ -18,5 +18,5 @@ Commands:
         Shorthand: 'n'
         Type: 'string'
         Options: []
-        Prompt: 'Name your component.'
+        Prompt: 'Name your component'
         Usage: 'name of the component'

@@ -17,25 +17,30 @@ const client = axios_1.default.create({
 });
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('Node:Run');
+        console.log('Extension run...');
         const { data } = yield client.get('/command');
-        console.log('Node:Command:', JSON.stringify(data, null, 2));
         let flags = '';
         if (data.interactive) {
             for (const f of data.flags) {
                 const promptResp = yield client.post('/prompt', f);
-                console.log('Node:Prompt:', promptResp.data);
                 flags = `${flags} --${f.name}=${promptResp.data}`;
             }
         }
-        console.log('Node:exec:', `nr1 ${data.cmd} ${flags}`);
-        child_process_1.exec(`nr1 ${data.cmd} ${flags}`);
-        // const response = await client.post('/exec', {
-        //   cmd: data.cmd,
-        //   flags: flags,
-        // });
-        // console.log('Node:exec:', response);
+        const cmdParsed = `nr1 ${data.cmd} ${flags}`;
+        console.log(cmdParsed);
+        // Execute the full command
+        child_process_1.exec(cmdParsed, execCallback);
     });
+}
+function execCallback(error, stdout, stderr) {
+    if (error) {
+        console.error('Error:', JSON.stringify(error, null, 2));
+        return;
+    }
+    if (stderr) {
+        console.error(stderr);
+    }
+    console.log('stdout:', stdout);
 }
 try {
     run();
