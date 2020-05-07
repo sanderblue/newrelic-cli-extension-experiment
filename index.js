@@ -11,23 +11,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
+const child_process_1 = require("child_process");
 const client = axios_1.default.create({
     baseURL: 'http://localhost:8080',
 });
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('Node - making HTTP request');
+        console.log('Node:Run');
         const { data } = yield client.get('/command');
-        console.log('Node - cmdResp:', JSON.stringify(data, null, 2));
+        console.log('Node:Command:', JSON.stringify(data, null, 2));
+        let flags = {};
         if (data.interactive) {
             for (const f of data.flags) {
-                const promptResp = yield client.post('/prompt', {
-                    options: f.options,
-                    prompt: f.prompt,
-                });
-                console.log('Node - promptResp', promptResp.data);
+                const promptResp = yield client.post('/prompt', f);
+                console.log('Node:Prompt:', promptResp.data);
+                flags[`--${f.name}`] = promptResp.data;
             }
         }
+        child_process_1.exec(`nr1 `);
+        // const response = await client.post('/exec', {
+        //   cmd: data.cmd,
+        //   flags: flags,
+        // });
+        // console.log('Node:exec:', response);
     });
 }
 try {

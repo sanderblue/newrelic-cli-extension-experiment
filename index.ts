@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import * as http from 'http';
 import axios from 'axios';
+import { exec } from 'child_process';
 
 interface Flag {
   name: string;
@@ -22,22 +22,29 @@ const client = axios.create({
 });
 
 async function run(): Promise<void> {
-  console.log('Node - making HTTP request');
+  console.log('Node:Run');
 
   const { data } = await client.get<CLIResponse>('/command');
 
-  console.log('Node - cmdResp:', JSON.stringify(data, null, 2));
+  console.log('Node:Command:', JSON.stringify(data, null, 2));
 
+  let flags = {};
   if (data.interactive) {
     for (const f of data.flags) {
-      const promptResp = await client.post('/prompt', {
-        options: f.options,
-        prompt: f.prompt,
-      });
+      const promptResp = await client.post<string>('/prompt', f);
 
-      console.log('Node - promptResp', promptResp.data);
+      console.log('Node:Prompt:', promptResp.data);
+
+      flags[`--${f.name}`] = promptResp.data;
     }
   }
+
+  exec(`nr1 `);
+  // const response = await client.post('/exec', {
+  //   cmd: data.cmd,
+  //   flags: flags,
+  // });
+  // console.log('Node:exec:', response);
 }
 
 try {

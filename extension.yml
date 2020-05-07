@@ -1,7 +1,7 @@
 Extension:
-  Name: nerdpack
-  Short: nerdpack operations
-  Command: /Users/sblue/.newrelic/extensions/nerdpack/index.js
+  Name: one
+  Short: nr1 operations
+  Command: /Users/sblue/.newrelic/extensions/one/index.js
 Commands:
   - Use: create
     Short: create a nerdpack
@@ -9,15 +9,14 @@ Commands:
     Flags:
       - Name: 'type'
         Shorthand: 't'
+        Type: 'string'
         Options: ['nerdpack', 'nerdlet', 'launcher']
         Prompt: 'What kind of component do you want to create'
         Usage: 'type of the component'
 
-  - Use: hello
-    Short: say hello
-    Flags:
-      - Shorthand: 'n'
-        Name: name
-        Type: string
-        Usage: your name
-        Required: true
+      - Name: 'name'
+        Shorthand: 'n'
+        Type: 'string'
+        Options: []
+        Prompt: 'Name your component.'
+        Usage: 'name of the component'
