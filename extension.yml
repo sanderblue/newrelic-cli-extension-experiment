@@ -1,12 +1,23 @@
-Plugin:
+Extension:
   Name: nerdpack
   Short: nerdpack operations
-  Command: /Users/sblue/.newrelic/plugins/nerdpack/index.js
+  Command: /Users/sblue/.newrelic/extensions/nerdpack/index.js
 Commands:
+  - Use: create
+    Short: create a nerdpack
+    Interactive: true
+    Flags:
+      - Name: 'type'
+        Shorthand: 't'
+        Options: ['nerdpack', 'nerdlet', 'launcher']
+        Prompt: 'What kind of component do you want to create'
+        Usage: 'type of the component'
+
   - Use: hello
     Short: say hello
     Flags:
-      - Shorthand: n
+      - Shorthand: 'n'
         Name: name
         Type: string
         Usage: your name
+        Required: true
