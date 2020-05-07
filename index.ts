@@ -28,18 +28,20 @@ async function run(): Promise<void> {
 
   console.log('Node:Command:', JSON.stringify(data, null, 2));
 
-  let flags = {};
+  let flags = '';
   if (data.interactive) {
     for (const f of data.flags) {
       const promptResp = await client.post<string>('/prompt', f);
 
       console.log('Node:Prompt:', promptResp.data);
 
-      flags[`--${f.name}`] = promptResp.data;
+      flags = `${flags} --${f.name}=${promptResp.data}`;
     }
   }
 
-  exec(`nr1 `);
+  console.log('Node:exec:', `nr1 ${data.cmd} ${flags}`);
+
+  exec(`nr1 ${data.cmd} ${flags}`);
   // const response = await client.post('/exec', {
   //   cmd: data.cmd,
   //   flags: flags,

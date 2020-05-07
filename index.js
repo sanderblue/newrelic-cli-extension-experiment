@@ -20,15 +20,16 @@ function run() {
         console.log('Node:Run');
         const { data } = yield client.get('/command');
         console.log('Node:Command:', JSON.stringify(data, null, 2));
-        let flags = {};
+        let flags = '';
         if (data.interactive) {
             for (const f of data.flags) {
                 const promptResp = yield client.post('/prompt', f);
                 console.log('Node:Prompt:', promptResp.data);
-                flags[`--${f.name}`] = promptResp.data;
+                flags = `${flags} --${f.name}=${promptResp.data}`;
             }
         }
-        child_process_1.exec(`nr1 `);
+        console.log('Node:exec:', `nr1 ${data.cmd} ${flags}`);
+        child_process_1.exec(`nr1 ${data.cmd} ${flags}`);
         // const response = await client.post('/exec', {
         //   cmd: data.cmd,
         //   flags: flags,
